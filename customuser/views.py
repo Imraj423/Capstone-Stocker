@@ -59,7 +59,7 @@ def logoutUser(request):
 
 def main_view(request):
     html = "main.html"
-    return render(request, html, {'context': "theContext"})
+    return render(request, html)
 
 
 def company_less_view(request):

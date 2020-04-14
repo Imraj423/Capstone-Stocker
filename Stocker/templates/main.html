@@ -1,0 +1,105 @@
+{% extends "main_template.html" %}
+
+{% block content %}
+<style>
+    h1 {
+        text-align: center;
+        margin: 86px 0px 42px 0px;
+    }
+
+    div#balanceInfo {
+        margin: 0px auto 0px auto;
+    }
+
+    input#search {
+        border-radius: 30px;
+        height: 30px;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    span.row {
+        border: 1px solid silver;
+        border-radius: 30px;
+        margin: 10px 0px 10px 0px;
+    }
+
+    span p.col {
+        margin: 0px;
+        padding: 5px 0px 5px 15px;
+        text-align: center;
+    }
+</style>
+
+<h1>Balance</h1>
+<div class='row justify-content-md-center' id='balanceInfo'>
+
+    <div class='col-md-auto ml-auto mr-auto'>
+        <h3 class='row'>$50,000</h3>
+        <small class='row'>Total deposits - withdraws</small>
+    </div>
+
+    <div class='col-md-auto ml-auto mr-auto'>
+        <h3 class='row'>$72,034</h3>
+        <small class='row'>Current Portfolio Value</small>
+    </div>
+
+    <div class='col-md-auto ml-auto mr-auto'>
+        <h3 class='row'>%23.8</h3>
+        <small class='row'>Profit/Loss</small>
+    </div>
+</div>
+
+<div class='row'>
+    <input type='text' placeholder="Search For You Favorite Picks!" class='w-50 ml-auto mr-auto' id='search' />
+</div>
+
+<h1>Portfolio</h1>
+<div>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+</div>
+
+<h1>Following</h1>
+<div>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+    <span class='row'>
+        <p class='col'>Icon? - TKRR - Share Company of Tickers</p>
+        <p class='col' id='deltaColor'>%10</p>
+    </span>
+</div>
+
+{% endblock %}
