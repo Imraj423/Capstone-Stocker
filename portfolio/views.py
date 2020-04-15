@@ -9,23 +9,11 @@ from rest_framework.response import Response
 from django.http import JsonResponse, HttpRequest
 from .models import Stock
 
-#alphaVantage api
-from alpha_vantage.timeseries import TimeSeries
-from alpha_vantage.techindicators import TechIndicators
+# alphaVantage api
+# from alpha_vantage.timeseries import TimeSeries
+# from alpha_vantage.techindicators import TechIndicators
 import json
-# from matplotlib.pyplot import figure
-# import matplotlib.pyplot as plt
-
-
-def csrf(request):
-    print(str(request))
-    # print(request.query_params)
-    repr(request)
-    return JsonResponse({'csrfToken': get_token(request)})
-
-
-def ping(request):
-    return JsonResponse({'result': 'OK'})
+# import gzip
 
 
 class StockViewSet(viewsets.ModelViewSet):
@@ -34,29 +22,59 @@ class StockViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['GET', 'POST'])
     def search(self, request, *args, **kwargs):
-        '''http://localhost:8000/api/stocks/{pk or search}/search'''
-        print(request, args, kwargs)
+        ''' GET http://localhost:8000/api/stocks/aapl/search/ => substitute 'aapl' for any other ticker symbol only
+            Function returns ticker symbol, open, high, low, price, volume available, previous close, change amt and
+            change percentage.'''
+        if (request.method == 'GET'):
+            key = 'HV9B9WY1I8NHBYU1'
+            keyword = kwargs['pk']
+            query = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={keyword}&apikey={key}'
+            r = requests.get(query)
+            data = r.json()
+            return JsonResponse({'result': data})
 
-        # --API_KEY = 'HV9B9WY1I8NHBYU1'
-        key = 'HV9B9WY1I8NHBYU1'
-        # --Chose your output format, or default to JSON (python dict)
-        # ts = TimeSeries(key, output_format='pandas')
-        ts = TimeSeries(key)
+    @action(detail=True, methods=['GET', 'POST'])
+    def news(self, request, *args, **kwargs):
+        '''GET http://localhost:8000/api/stocks/news/news/'''
+        API_KEY = 'Tsk_9dda15a9c6a246d2a7022395b7aa8b90'
+        query = f'https://sandbox.iexapis.com/stable/stock/AAPL/news/last/3/?token={API_KEY}'
+        # query = f'https://sandbox.iexapis.com/stable/stock/AAPL/batch?types=quote,stats,company,news,chart&range=1y&token={API_KEY}'
+        r = requests.get(query)
+        return JsonResponse({'result': r.json()})
 
-        ti = TechIndicators(key)
+    @action(detail=True, methods=['GET', 'POST'])
+    def keyword(self, request, *args, **kwargs):
+        '''GET http://localhost:8000/api/stocks/sony/keyword/ => substitute 'sony' for any other company name or ticker symbol
+            This function takes any keyword or symbol and returns an array of possible matches.  We likely only need option 1 (symbol)
+            and 2 (name) from each of the matches.'''
+        if (request.method == 'GET'):
+            key = 'HV9B9WY1I8NHBYU1'
+            keyword = kwargs['pk']
+            query = f'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={key}'
+            r = requests.get(query)
+            data = r.json()['bestMatches']
+            return JsonResponse({'result': data})
 
-        # --Get the data, returns a tuple
-        # --aapl_data is a pandas dataframe, aapl_meta_data is a dict
-        aapl_data, aapl_meta_data = ts.get_daily(symbol='AAPL')
-        # aapl_sma is a dict, aapl_meta_sma also a dict
-        aapl_sma, aapl_meta_sma = ti.get_sma(symbol='AAPL')
-        # --Visualization
-        # figure(num=None, figsize=(15, 6), dpi=80, facecolor='w', edgecolor='k')
-        # aapl_data['4. close'].plot()
-        # plt.tight_layout()
-        # plt.grid()
-        # plt.show()
-        result = json.dumps(aapl_data)
-        print(json.dumps(aapl_data))
+    @action(detail=True, methods=['GET', 'POST'])
+    def crypto(self, request, *args, **kwargs):
+        '''GET http://localhost:8000/api/stocks/crypto/crypto/ => Will wire up to take multiple kwargs for queries below.
+            Currently returns daily value, index health, and exchange rates.'''
+        if (request.method == 'GET'):
+            key = 'HV9B9WY1I8NHBYU1'
+            keyword = kwargs['pk']
+            query_exchange = f'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=CNY&apikey={key}'
+            exchange_rates = requests.get(query_exchange)
+            data_exchange = exchange_rates.json()
 
-        return JsonResponse({"result": result})
+            query_health = f'https://www.alphavantage.co/query?function=CRYPTO_RATING&symbol=BTC&apikey={key}'
+            health_index = requests.get(query_health)
+            data_health = health_index.json()
+
+            query_daily= f'https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=CNY&apikey={key}'
+            current_rate = requests.get(query_daily)
+            data_daily = current_rate.json()
+
+            return JsonResponse({
+                'exchange_rate': data_exchange,
+                'health_index': data_health,
+                'daily_rate': data_daily})
