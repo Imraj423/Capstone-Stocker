@@ -44,15 +44,15 @@ INSTALLED_APPS = [
     'customuser',
     'landingpage.apps.LandingpageConfig',
     # 'authorization.apps.AuthorizationConfig',
-    'rest_framework',
-    'corsheaders',
-    'alpha_vantage',
+    # 'rest_framework',
+    # 'corsheaders',
+    # 'alpha_vantage',
     'crispy_forms'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'Stocker.urls'
 
 TEMPLATES = [
@@ -132,9 +132,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CORS_ORIGIN_WHITELIST = ['https://localhost:3000']
-CSRF_TRUSTED_ORIGINS = ['localhost:3000']
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = ['https://localhost:3000']
+# CSRF_TRUSTED_ORIGINS = ['localhost:3000']
+# CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = 'customuser.CustomUser'
 JWT_AUTH = {
